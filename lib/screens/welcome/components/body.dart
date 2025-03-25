@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uni_favors/constants.dart';
+import 'package:uni_favors/screens/login/login_screen.dart';
 import 'package:uni_favors/screens/welcome/components/background.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:uni_favors/components/rounded_button.dart';
@@ -17,7 +18,7 @@ class Body extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "BIENVENIDO/A",
+              "BIENVENID@",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
             ),
             SizedBox(height: size.height * 0.04),
@@ -26,7 +27,19 @@ class Body extends StatelessWidget {
               height: size.height * 0.45,
             ),
             SizedBox(height: size.height * 0.04),
-            RoundedButton(text: "INICIAR SESIÓN", press: () {}),
+            RoundedButton(
+              text: "INICIAR SESIÓN",
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                    },
+                  ),
+                );
+              },
+            ),
             RoundedButton(
               text: "REGISTRARSE",
               color: kPrimaryLightColor,
