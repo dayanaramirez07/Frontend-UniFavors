@@ -6,10 +6,54 @@ import 'package:uni_favors/components/rounded_input_field.dart';
 import 'package:uni_favors/components/rounded_password_field.dart';
 import 'package:uni_favors/constants.dart';
 import 'package:uni_favors/screens/login/components/background.dart';
+import 'package:uni_favors/screens/login/login_screen.dart';
 import 'package:uni_favors/screens/signup/signup_screen.dart';
+import 'package:uni_favors/services/usuario_service.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  String correo = '';
+  String contrasena = '';
+  bool isLoading = false;
+
+  void login() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final success = await UsuarioService().login(correo, contrasena);
+     // Cambia esto por la lógica de tu API
+    setState(() {
+      isLoading = false;
+    });
+
+    if (success) {
+      // Mostrar un mensaje de error
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Inicio de sesión exitoso')));
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LoginScreen(); // Cambia esto por la pantalla de inicio
+          },
+        ),
+      );
+    } else {
+      // Mostrar un mensaje de error
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Credenciales incorrectas')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +80,20 @@ class Body extends StatelessWidget {
           RoundedInputField(
             hintText: "Usuario o correo institucional",
             icon: Icons.person,
-            onChanged: (value) {},
+            onChanged: (value) {
+              correo = value;
+            },
           ),
-          RoundedPasswordField(onChanged: (value) {}),
+          RoundedPasswordField(onChanged: (value) {
+            contrasena = value;
+          }),
           SizedBox(height: size.height * 0.02),
-          RoundedButton(text: "INGRESAR", press: () {}),
+          isLoading
+              ? CircularProgressIndicator()
+              : RoundedButton(
+                  text: "INGRESAR",
+                  press: login,
+                ),
           SizedBox(height: size.height * 0.04),
           AlreadyHaveUnAccountCheck(
             login: true,
