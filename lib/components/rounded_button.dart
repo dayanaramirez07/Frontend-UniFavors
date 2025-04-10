@@ -21,17 +21,18 @@ class RoundedButton extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: SizedBox(
         width: size.width * 0.8,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(29),
-          child: TextButton(
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-              backgroundColor: color,
-              foregroundColor: textColor,
+        child: TextButton(
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+            backgroundColor: color,
+            foregroundColor: textColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(29),
+              side: BorderSide(color: kPrimaryColor, width: 1.5),
             ),
-            onPressed: press,
-            child: Text(text, style: TextStyle(color: textColor)),
           ),
+          onPressed: press,
+          child: Text(text, style: TextStyle(color: textColor)),
         ),
       ),
     );

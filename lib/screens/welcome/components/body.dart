@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uni_favors/constants.dart';
 import 'package:uni_favors/screens/login/login_screen.dart';
+import 'package:uni_favors/screens/signup/signup_screen.dart';
 import 'package:uni_favors/screens/welcome/components/background.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:uni_favors/components/rounded_button.dart';
@@ -19,7 +20,11 @@ class Body extends StatelessWidget {
           children: <Widget>[
             Text(
               "BIENVENID@",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 36,
+                color: kPrimaryColor,
+              ),
             ),
             SizedBox(height: size.height * 0.04),
             SvgPicture.asset(
@@ -42,9 +47,18 @@ class Body extends StatelessWidget {
             ),
             RoundedButton(
               text: "REGISTRARSE",
-              color: kPrimaryLightColor,
-              textColor: Colors.black,
-              press: () {},
+              color: kWhiteColor,
+              textColor: kPrimaryColor,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SignupScreen();
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),

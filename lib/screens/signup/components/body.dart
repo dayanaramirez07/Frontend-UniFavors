@@ -5,8 +5,8 @@ import 'package:uni_favors/components/rounded_button.dart';
 import 'package:uni_favors/components/rounded_input_field.dart';
 import 'package:uni_favors/components/rounded_password_field.dart';
 import 'package:uni_favors/constants.dart';
-import 'package:uni_favors/screens/login/components/background.dart';
-import 'package:uni_favors/screens/signup/signup_screen.dart';
+import 'package:uni_favors/screens/login/login_screen.dart';
+import 'package:uni_favors/screens/signup/components/background.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -20,7 +20,7 @@ class Body extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            "INICIO DE SESIÓN",
+            "REGISTRO",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,
@@ -29,26 +29,26 @@ class Body extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.04),
           SvgPicture.asset(
-            "assets/icons/login.svg",
+            "assets/icons/signup.svg",
             height: size.height * 0.35,
           ),
           SizedBox(height: size.height * 0.04),
           RoundedInputField(
-            hintText: "Usuario o correo universitario",
+            hintText: "Correo universitario",
             icon: Icons.person,
             onChanged: (value) {},
           ),
           RoundedPasswordField(onChanged: (value) {}),
-          RoundedButton(text: "INGRESAR", press: () {}),
+          RoundedButton(text: "CREAR CUENTA", press: () {}),
           SizedBox(height: size.height * 0.04),
           AlreadyHaveUnAccountCheck(
-            login: true,
+            login: false,
             press: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return SignupScreen();
+                    return LoginScreen();
                   },
                 ),
               );
