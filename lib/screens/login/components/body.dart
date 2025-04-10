@@ -34,11 +34,12 @@ class Body extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.04),
           RoundedInputField(
-            hintText: "Usuario o correo universitario",
+            hintText: "Usuario o correo institucional",
             icon: Icons.person,
             onChanged: (value) {},
           ),
           RoundedPasswordField(onChanged: (value) {}),
+          SizedBox(height: size.height * 0.02),
           RoundedButton(text: "INGRESAR", press: () {}),
           SizedBox(height: size.height * 0.04),
           AlreadyHaveUnAccountCheck(
