@@ -8,8 +8,32 @@ import 'package:uni_favors/constants.dart';
 import 'package:uni_favors/screens/login/components/background.dart';
 import 'package:uni_favors/screens/signup/signup_screen.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final TextEditingController correoController = TextEditingController();
+  final TextEditingController contrasennaController = TextEditingController();
+
+  bool mostrarContrasenna = false;
+
+  String? validarCampo(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Este campo es obligatorio';
+    }
+    return null;
+  }
+
+  @override
+  void dispose() {
+    correoController.dispose();
+    contrasennaController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +60,26 @@ class Body extends StatelessWidget {
           RoundedInputField(
             hintText: "Usuario o correo institucional",
             icon: Icons.person,
-            onChanged: (value) {},
+            controller: correoController,
+            validator: validarCampo,
           ),
-          RoundedPasswordField(onChanged: (value) {}),
+          RoundedPasswordField(
+            controller: contrasennaController,
+            validator: validarCampo,
+            showPassword: mostrarContrasenna,
+            togglePasswordVisibility: () {
+              setState(() {
+                mostrarContrasenna = !mostrarContrasenna;
+              });
+            },
+          ),
           SizedBox(height: size.height * 0.02),
-          RoundedButton(text: "INGRESAR", press: () {}),
+          RoundedButton(
+            text: "INGRESAR",
+            press: () {
+              // Aquí podrías agregar la lógica de inicio de sesión
+            },
+          ),
           SizedBox(height: size.height * 0.04),
           AlreadyHaveUnAccountCheck(
             login: true,

@@ -3,13 +3,15 @@ import 'package:uni_favors/constants.dart';
 
 class RoundedButton extends StatelessWidget {
   final String text;
-  final VoidCallback press;
-  final Color color, textColor;
+  final VoidCallback? press;
+  final Color color, textColor, border;
+
   const RoundedButton({
     super.key,
     required this.text,
     required this.press,
     this.color = kPrimaryColor,
+    this.border = kPrimaryColor,
     this.textColor = Colors.white,
   });
 
@@ -28,7 +30,7 @@ class RoundedButton extends StatelessWidget {
             foregroundColor: textColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(29),
-              side: BorderSide(color: kPrimaryColor, width: 1.5),
+              side: BorderSide(color: border, width: 1.5),
             ),
           ),
           onPressed: press,

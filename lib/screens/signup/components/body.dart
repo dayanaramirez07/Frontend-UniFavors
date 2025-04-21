@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:uni_favors/components/already_have_un_account_check.dart';
-import 'package:uni_favors/components/rounded_button.dart';
-import 'package:uni_favors/components/rounded_dropdown.dart';
-import 'package:uni_favors/components/rounded_input_field.dart';
-import 'package:uni_favors/components/rounded_password_field.dart';
 import 'package:uni_favors/constants.dart';
+import 'package:uni_favors/components/rounded_button.dart';
+import 'package:uni_favors/components/already_have_un_account_check.dart';
 import 'package:uni_favors/screens/login/login_screen.dart';
 import 'package:uni_favors/screens/signup/components/background.dart';
+import 'package:uni_favors/screens/signup/components/signup_form.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  bool isFormValido = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,53 +40,30 @@ class Body extends StatelessWidget {
           ),
           SizedBox(height: size.height * 0.02),
           SizedBox(
-            height: size.height * 0.3, // Por ejemplo, el 45% de la pantalla
+            height: size.height * 0.3,
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  RoundedDropdown(
-                    hint: "Tipo de usuario",
-                    options: ['Vendedor', 'Cliente', 'Compa'],
-                    onChanged: (value) {},
-                  ),
-                  RoundedInputField(
-                    hintText: "Correo institucional (@udea.edu.co)",
-                    icon: Icons.email,
-                    onChanged: (value) {},
-                  ),
-                  RoundedInputField(
-                    hintText: "Usuario",
-                    icon: Icons.person,
-                    onChanged: (value) {},
-                  ),
-                  RoundedInputField(
-                    hintText: "Celular",
-                    icon: Icons.phone,
-                    keyboardType: TextInputType.phone,
-                    onChanged: (value) {},
-                  ),
-                  RoundedPasswordField(onChanged: (value) {}),
-                  RoundedPasswordField(
-                    onChanged: (value) {},
-                    hintText: "Confirmar contraseña",
-                  ),
-                ],
+              child: SignupForm(
+                onFormUpdated: (valido) {
+                  setState(() => isFormValido = valido);
+                },
               ),
             ),
           ),
           SizedBox(height: size.height * 0.02),
-          RoundedButton(text: "CREAR CUENTA", press: () {}),
+          RoundedButton(
+            text: "CREAR CUENTA",
+            press: isFormValido ? () => print("Submit") : null,
+            color: isFormValido ? kPrimaryColor : Colors.grey,
+            border: isFormValido ? kPrimaryColor : Colors.grey,
+            textColor: Colors.white,
+          ),
           SizedBox(height: size.height * 0.02),
           AlreadyHaveUnAccountCheck(
             login: false,
             press: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return LoginScreen();
-                  },
-                ),
+                MaterialPageRoute(builder: (context) => LoginScreen()),
               );
             },
           ),
