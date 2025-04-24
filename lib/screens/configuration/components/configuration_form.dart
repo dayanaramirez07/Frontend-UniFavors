@@ -1,50 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:uni_favors/components/rounded_input_field.dart';
 import 'package:uni_favors/components/rounded_password_field.dart';
-import 'package:uni_favors/components/rounded_dropdown.dart';
 import 'package:uni_favors/components/validators.dart';
-import 'package:uni_favors/screens/signup/components/signup_state.dart';
+import 'package:uni_favors/screens/configuration/components/configuration_state.dart';
 import 'package:uni_favors/components/focus_listeners.dart';
 
-class SignupForm extends StatefulWidget {
+class ConfigurationForm extends StatefulWidget {
   final void Function(bool isValid)? onFormUpdated;
 
-  const SignupForm({super.key, this.onFormUpdated});
+  const ConfigurationForm({super.key, this.onFormUpdated});
 
   @override
-  State<SignupForm> createState() => _SignupFormState();
+  State<ConfigurationForm> createState() => _ConfigurationFormState();
 }
 
-class _SignupFormState extends State<SignupForm> {
-  final state = SignupFormStateManager();
+class _ConfigurationFormState extends State<ConfigurationForm> {
+  final state = ConfigurationStateManager();
 
   @override
   void initState() {
     super.initState();
-
-    attachFocusListener(
-      node: state.correoFocus,
-      onFocusLost: () {
-        setState(() => state.correoTocado = true);
-        validarForm();
-      },
-    );
-
-    attachFocusListener(
-      node: state.usuarioFocus,
-      onFocusLost: () {
-        setState(() => state.usuarioTocado = true);
-        validarForm();
-      },
-    );
-
-    attachFocusListener(
-      node: state.celularFocus,
-      onFocusLost: () {
-        setState(() => state.celularTocado = true);
-        validarForm();
-      },
-    );
 
     attachFocusListener(
       node: state.contrasennaFocus,
@@ -66,9 +40,6 @@ class _SignupFormState extends State<SignupForm> {
   void validarForm() {
     final valido = state.formKey.currentState?.validate() ?? false;
     final todosCamposLlenos =
-        state.correoController.text.isNotEmpty &&
-        state.usuarioController.text.isNotEmpty &&
-        state.celularController.text.isNotEmpty &&
         state.contrasennaController.text.isNotEmpty &&
         state.confirmacionController.text.isNotEmpty;
 
@@ -87,39 +58,8 @@ class _SignupFormState extends State<SignupForm> {
       key: state.formKey,
       child: Column(
         children: [
-          RoundedDropdown(
-            hint: "Tipo de usuario",
-            options: ['Vendedor', 'Cliente', 'Compa'],
-            onChanged: (value) {
-              setState(() {
-                state.tipoUsuarioSeleccionado = value;
-              });
-              validarForm();
-            },
-          ),
-          RoundedInputField(
-            hintText: "Correo institucional (@udea.edu.co)",
-            icon: Icons.email,
-            controller: state.correoController,
-            focusNode: state.correoFocus,
-            validator: (val) => !state.correoTocado ? null : validarCorreo(val),
-          ),
-          RoundedInputField(
-            hintText: "Usuario",
-            icon: Icons.person,
-            controller: state.usuarioController,
-            focusNode: state.usuarioFocus,
-            validator: (val) => !state.usuarioTocado ? null : validarCampo(val),
-          ),
-          RoundedInputField(
-            hintText: "Celular",
-            icon: Icons.phone,
-            keyboardType: TextInputType.phone,
-            controller: state.celularController,
-            focusNode: state.celularFocus,
-            validator: (val) => !state.celularTocado ? null : validarCampo(val),
-          ),
           RoundedPasswordField(
+            hintText: "Nueva contraseña",
             controller: state.contrasennaController,
             focusNode: state.contrasennaFocus,
             showPassword: state.mostrarContrasenna,

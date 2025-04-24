@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:uni_favors/components/already_have_un_account_check.dart';
 import 'package:uni_favors/components/rounded_button.dart';
-import 'package:uni_favors/components/rounded_input_field.dart';
-import 'package:uni_favors/components/rounded_password_field.dart';
 import 'package:uni_favors/constants.dart';
 import 'package:uni_favors/screens/login/components/background.dart';
+import 'package:uni_favors/screens/login/components/login_form.dart';
 import 'package:uni_favors/screens/signup/signup_screen.dart';
+import 'package:uni_favors/screens/login/components/login_state.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -16,22 +16,11 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  final TextEditingController correoController = TextEditingController();
-  final TextEditingController contrasennaController = TextEditingController();
-
-  bool mostrarContrasenna = false;
-
-  String? validarCampo(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Este campo es obligatorio';
-    }
-    return null;
-  }
+  final state = LoginFormStateManager();
 
   @override
   void dispose() {
-    correoController.dispose();
-    contrasennaController.dispose();
+    state.dispose();
     super.dispose();
   }
 
@@ -57,27 +46,12 @@ class _BodyState extends State<Body> {
             height: size.height * 0.35,
           ),
           SizedBox(height: size.height * 0.04),
-          RoundedInputField(
-            hintText: "Usuario o correo institucional",
-            icon: Icons.person,
-            controller: correoController,
-            validator: validarCampo,
-          ),
-          RoundedPasswordField(
-            controller: contrasennaController,
-            validator: validarCampo,
-            showPassword: mostrarContrasenna,
-            togglePasswordVisibility: () {
-              setState(() {
-                mostrarContrasenna = !mostrarContrasenna;
-              });
-            },
-          ),
+          LoginForm(),
           SizedBox(height: size.height * 0.02),
           RoundedButton(
             text: "INGRESAR",
             press: () {
-              // Aquí podrías agregar la lógica de inicio de sesión
+              // Lógica
             },
           ),
           SizedBox(height: size.height * 0.04),

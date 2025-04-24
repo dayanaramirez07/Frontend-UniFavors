@@ -9,6 +9,7 @@ class RoundedInputField extends StatelessWidget {
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
   final FocusNode? focusNode;
+  final bool? enabled;
 
   const RoundedInputField({
     super.key,
@@ -18,6 +19,7 @@ class RoundedInputField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.validator,
     this.focusNode,
+    this.enabled,
   });
 
   @override
@@ -28,6 +30,7 @@ class RoundedInputField extends StatelessWidget {
         keyboardType: keyboardType,
         validator: validator,
         focusNode: focusNode,
+        enabled: enabled,
         decoration: InputDecoration(
           icon: Icon(icon, color: kPrimaryColor),
           hintText: hintText,

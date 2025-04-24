@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:uni_favors/constants.dart';
+import 'package:uni_favors/components/rounded_button.dart';
+import 'package:uni_favors/screens/configuration/components/configuration_form.dart';
+import 'package:uni_favors/screens/configuration/components/information.dart';
+
+class Body extends StatefulWidget {
+  const Body({super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  bool isCelularValido = false;
+  bool isContrasennaValida = false;
+
+  bool get isFormValido => isCelularValido && isContrasennaValida;
+
+  void actualizarValidezCelular(bool valido) {
+    setState(() => isCelularValido = valido);
+  }
+
+  void actualizarValidezContrasenna(bool valido) {
+    setState(() => isContrasennaValida = valido);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return SingleChildScrollView(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: size.height * 0.1),
+              Text(
+                'Información del usuario',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: kPrimaryColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Information(onFormUpdated: actualizarValidezCelular),
+              SizedBox(height: size.height * 0.02),
+              Text(
+                'Actualizar contraseña',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: kPrimaryColor,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              ConfigurationForm(onFormUpdated: actualizarValidezContrasenna),
+              SizedBox(height: size.height * 0.02),
+              RoundedButton(
+                text: "ACTUALIZAR",
+                press: isFormValido ? () => print("Submit") : null,
+                color: isFormValido ? kPrimaryColor : Colors.grey,
+                border: isFormValido ? kPrimaryColor : Colors.grey,
+                textColor: Colors.white,
+              ),
+              SizedBox(height: size.height * 0.1),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
