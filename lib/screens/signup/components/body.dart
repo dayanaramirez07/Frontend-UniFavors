@@ -21,53 +21,69 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Background(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "REGISTRO",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: kPrimaryColor,
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-          ),
-          SizedBox(height: size.height * 0.02),
-          SvgPicture.asset(
-            "assets/icons/signup.svg",
-            height: size.height * 0.3,
-          ),
-          SizedBox(height: size.height * 0.02),
-          SizedBox(
-            height: size.height * 0.3,
-            child: SingleChildScrollView(
-              child: SignupForm(
-                onFormUpdated: (valido) {
-                  setState(() => isFormValido = valido);
-                },
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Background(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "REGISTRO",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: kPrimaryColor,
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.02),
+                    SvgPicture.asset(
+                      "assets/icons/signup.svg",
+                      height: size.height * 0.3,
+                    ),
+                    SizedBox(height: size.height * 0.02),
+                    SizedBox(
+                      height: size.height * 0.3,
+                      child: SingleChildScrollView(
+                        child: SignupForm(
+                          onFormUpdated: (valido) {
+                            setState(() => isFormValido = valido);
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.02),
+                    RoundedButton(
+                      text: "CREAR CUENTA",
+                      press: isFormValido ? () => print("Submit") : null,
+                      color: isFormValido ? kPrimaryColor : Colors.grey,
+                      border: isFormValido ? kPrimaryColor : Colors.grey,
+                      textColor: Colors.white,
+                    ),
+                    SizedBox(height: size.height * 0.02),
+                    AlreadyHaveUnAccountCheck(
+                      login: false,
+                      press: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(height: size.height * 0.02),
-          RoundedButton(
-            text: "CREAR CUENTA",
-            press: isFormValido ? () => print("Submit") : null,
-            color: isFormValido ? kPrimaryColor : Colors.grey,
-            border: isFormValido ? kPrimaryColor : Colors.grey,
-            textColor: Colors.white,
-          ),
-          SizedBox(height: size.height * 0.02),
-          AlreadyHaveUnAccountCheck(
-            login: false,
-            press: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              );
-            },
-          ),
-        ],
+          );
+        },
       ),
     );
   }

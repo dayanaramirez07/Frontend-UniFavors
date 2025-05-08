@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uni_favors/constants.dart';
-import 'package:uni_favors/screens/dashboard_principal/dashboard_screen.dart';
-// import 'package:uni_favors/screens/welcome/welcome_screen.dart';
+import 'package:uni_favors/screens/welcome/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,8 +18,7 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      // home: WelcomeScreen(),
-      home: DashboardScreen(),
+      home: WelcomeScreen(),
     );
   }
 }

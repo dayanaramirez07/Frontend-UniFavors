@@ -4,14 +4,15 @@ import 'package:uni_favors/components/rounded_password_field.dart';
 import 'package:uni_favors/screens/login/components/login_state.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  final LoginFormStateManager state;
+  const LoginForm({super.key, required this.state});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final state = LoginFormStateManager();
+  LoginFormStateManager get state => widget.state;
 
   @override
   void dispose() {
