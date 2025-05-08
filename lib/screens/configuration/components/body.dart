@@ -29,46 +29,49 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return SingleChildScrollView(
-      child: Center(
+    return Center(
+      child: SizedBox(
+        height: size.height,
+        width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: size.height * 0.1),
-              Text(
-                'Información del usuario',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: kPrimaryColor,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 20),
+                Text(
+                  'Información del usuario',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: kPrimaryColor,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              Information(onFormUpdated: actualizarValidezCelular),
-              SizedBox(height: size.height * 0.02),
-              Text(
-                'Actualizar contraseña',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: kPrimaryColor,
+                Information(onFormUpdated: actualizarValidezCelular),
+                SizedBox(height: 10),
+                Text(
+                  'Actualizar contraseña',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: kPrimaryColor,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              ConfigurationForm(onFormUpdated: actualizarValidezContrasenna),
-              SizedBox(height: size.height * 0.02),
-              RoundedButton(
-                text: "ACTUALIZAR",
-                press: isFormValido ? () => print("Submit") : null,
-                color: isFormValido ? kPrimaryColor : Colors.grey,
-                border: isFormValido ? kPrimaryColor : Colors.grey,
-                textColor: Colors.white,
-              ),
-              SizedBox(height: size.height * 0.1),
-            ],
+                ConfigurationForm(onFormUpdated: actualizarValidezContrasenna),
+                SizedBox(height: 10),
+                RoundedButton(
+                  text: "ACTUALIZAR",
+                  press: isFormValido ? () => print("Submit") : null,
+                  color: isFormValido ? kPrimaryColor : Colors.grey,
+                  border: isFormValido ? kPrimaryColor : Colors.grey,
+                  textColor: Colors.white,
+                ),
+              ],
+            ),
           ),
         ),
       ),
