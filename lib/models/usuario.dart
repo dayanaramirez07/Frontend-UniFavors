@@ -1,39 +1,75 @@
 class Usuario {
-  final int id;
-  final int tipo;
-  final String nombre;
+  final int? id;
+  final int tipoUsuario;
+  final String nombreUsuario;
   final String correo;
   final String celular;
-  final String contrasena;
+  final String? contrasenna;
+  final String? passwordHash;
 
   Usuario({
-    required this.id,
-    required this.tipo,
-    required this.nombre,
+    this.id,
+    required this.tipoUsuario,
+    required this.nombreUsuario,
     required this.correo,
     required this.celular,
-    required this.contrasena,
+    this.contrasenna,
+    this.passwordHash,
   });
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
     return Usuario(
       id: json['id'],
-      tipo: json['tipo'],
-      nombre: json['nombre'],
+      tipoUsuario: json['tipoUsuario'],
+      nombreUsuario: json['nombreUsuario'],
       correo: json['correo'],
       celular: json['celular'],
-      contrasena: json['contrasena'],
+      contrasenna: json['contraseña'],
+      passwordHash: json['passwordHash'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'tipo': tipo, 
-      'nombre': nombre,
+    final data = {
+      'tipoUsuario': tipoUsuario,
+      'nombreUsuario': nombreUsuario,
       'correo': correo,
       'celular': celular,
-      'contrasena': contrasena,
+      'contraseña': contrasenna,
     };
+
+    if (id != null) {
+      data['id'] = id;
+    }
+
+    return data;
+  }
+
+  String get tipoNombre {
+    switch (tipoUsuario) {
+      case 1:
+        return 'Admin';
+      case 2:
+        return 'Cliente';
+      case 3:
+        return 'Vendedor';
+      case 4:
+        return 'Compa';
+      default:
+        return '';
+    }
+  }
+
+  static int obtenerTipoUsuario(String? tipo) {
+    switch (tipo) {
+      case 'Cliente':
+        return 2;
+      case 'Vendedor':
+        return 3;
+      case 'Compa':
+        return 4;
+      default:
+        return 0;
+    }
   }
 }

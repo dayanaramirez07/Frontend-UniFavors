@@ -3,6 +3,7 @@ import 'package:uni_favors/components/rounded_input_field.dart';
 import 'package:uni_favors/components/validators.dart';
 import 'package:uni_favors/screens/configuration/components/configuration_state.dart';
 import 'package:uni_favors/components/focus_listeners.dart';
+import 'package:uni_favors/services/usuario_service.dart';
 
 class Information extends StatefulWidget {
   final void Function(bool isValid)? onFormUpdated;
@@ -27,6 +28,8 @@ class _InformationState extends State<Information> {
         validarForm();
       },
     );
+
+    cargarUsuarioActual();
   }
 
   void validarForm() {
@@ -34,6 +37,28 @@ class _InformationState extends State<Information> {
     final todosCamposLlenos = state.celularController.text.isNotEmpty;
 
     widget.onFormUpdated?.call(valido && todosCamposLlenos);
+  }
+
+  Future<void> cargarUsuarioActual() async {
+    final id = await UsuarioService().obtenerIdUsuarioDesdeToken();
+    if (id == null) {
+      return;
+    }
+
+    try {
+      final usuario = await UsuarioService().consultarUsuarioPorId(id);
+
+      state.tipoUsuarioController.text = usuario.tipoNombre;
+      state.correoController.text = usuario.correo;
+      state.usuarioController.text = usuario.nombreUsuario;
+      state.celularController.text = usuario.celular;
+
+      validarForm();
+
+      setState(() {});
+    } catch (e) {
+      print('Error cargando usuario: $e');
+    }
   }
 
   @override

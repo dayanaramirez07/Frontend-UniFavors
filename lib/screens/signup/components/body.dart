@@ -5,7 +5,9 @@ import 'package:uni_favors/components/rounded_button.dart';
 import 'package:uni_favors/components/already_have_un_account_check.dart';
 import 'package:uni_favors/screens/login/login_screen.dart';
 import 'package:uni_favors/screens/signup/components/background.dart';
+import 'package:uni_favors/screens/signup/components/signup_controller.dart';
 import 'package:uni_favors/screens/signup/components/signup_form.dart';
+import 'package:uni_favors/screens/signup/components/signup_state.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -15,7 +17,17 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  final state = SignupFormStateManager();
+  final signupController = SignupController();
+  final bool _isLoading = false;
+
   bool isFormValido = false;
+
+  @override
+  void dispose() {
+    state.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +64,7 @@ class _BodyState extends State<Body> {
                       height: size.height * 0.3,
                       child: SingleChildScrollView(
                         child: SignupForm(
+                          state: state,
                           onFormUpdated: (valido) {
                             setState(() => isFormValido = valido);
                           },
@@ -60,8 +73,23 @@ class _BodyState extends State<Body> {
                     ),
                     SizedBox(height: size.height * 0.02),
                     RoundedButton(
-                      text: "CREAR CUENTA",
-                      press: isFormValido ? () => print("Submit") : null,
+                      text: _isLoading ? "Cargando..." : "CREAR CUENTA",
+                      press:
+                          _isLoading
+                              ? null
+                              : () {
+                                signupController.handleCrearUsuario(
+                                  context: context,
+                                  formKey: state.formKey,
+                                  correoController: state.correoController,
+                                  usuarioController: state.usuarioController,
+                                  celularController: state.celularController,
+                                  contrasenaController:
+                                      state.contrasennaController,
+                                  tipoUsuarioSeleccionado:
+                                      state.tipoUsuarioSeleccionado,
+                                );
+                              },
                       color: isFormValido ? kPrimaryColor : Colors.grey,
                       border: isFormValido ? kPrimaryColor : Colors.grey,
                       textColor: Colors.white,

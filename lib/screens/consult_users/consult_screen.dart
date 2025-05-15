@@ -1,90 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:uni_favors/constants.dart';
+import 'package:uni_favors/models/usuario.dart';
+import 'package:uni_favors/services/usuario_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ConsultScreen extends StatelessWidget {
+class ConsultScreen extends StatefulWidget {
   const ConsultScreen({super.key});
+
+  @override
+  State<ConsultScreen> createState() => _ConsultScreenState();
+}
+
+class _ConsultScreenState extends State<ConsultScreen> {
+  final UsuarioService _usuarioService = UsuarioService();
+  late Future<List<Usuario>> _usuariosFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _usuariosFuture = _usuarioService.consultarUsuarios();
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    final List<Map<String, String>> usuarios = [
-      {
-        'tipo': 'Vendedor',
-        'nombre': 'Dayana Ramírez',
-        'correo': 'dayana.ramirez@udea.edu.co',
-      },
-      {
-        'tipo': 'Cliente',
-        'nombre': 'Carlos Pérez',
-        'correo': 'carlos.perez@udea.edu.co',
-      },
-      {
-        'tipo': 'Compa',
-        'nombre': 'Ana Gómez',
-        'correo': 'ana.gomez@udea.edu.co',
-      },
-      {
-        'tipo': 'Vendedor',
-        'nombre': 'Dayana Ramírez',
-        'correo': 'dayana.ramirez@udea.edu.co',
-      },
-      {
-        'tipo': 'Cliente',
-        'nombre': 'Carlos Pérez',
-        'correo': 'carlos.perez@udea.edu.co',
-      },
-      {
-        'tipo': 'Compa',
-        'nombre': 'Ana Gómez',
-        'correo': 'ana.gomez@udea.edu.co',
-      },
-      {
-        'tipo': 'Vendedor',
-        'nombre': 'Dayana Ramírez',
-        'correo': 'dayana.ramirez@udea.edu.co',
-      },
-      {
-        'tipo': 'Cliente',
-        'nombre': 'Carlos Pérez',
-        'correo': 'carlos.perez@udea.edu.co',
-      },
-      {
-        'tipo': 'Compa',
-        'nombre': 'Ana Gómez',
-        'correo': 'ana.gomez@udea.edu.co',
-      },
-      {
-        'tipo': 'Vendedor',
-        'nombre': 'Dayana Ramírez',
-        'correo': 'dayana.ramirez@udea.edu.co',
-      },
-      {
-        'tipo': 'Cliente',
-        'nombre': 'Carlos Pérez',
-        'correo': 'carlos.perez@udea.edu.co',
-      },
-      {
-        'tipo': 'Compa',
-        'nombre': 'Ana Gómez',
-        'correo': 'ana.gomez@udea.edu.co',
-      },
-      {
-        'tipo': 'Vendedor',
-        'nombre': 'Dayana Ramírez',
-        'correo': 'dayana.ramirez@udea.edu.co',
-      },
-      {
-        'tipo': 'Cliente',
-        'nombre': 'Carlos Pérez',
-        'correo': 'carlos.perez@udea.edu.co',
-      },
-      {
-        'tipo': 'Compa',
-        'nombre': 'Ana Gómez',
-        'correo': 'ana.gomez@udea.edu.co',
-      },
-    ];
 
     return Center(
       child: SizedBox(
@@ -172,88 +111,160 @@ class ConsultScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: usuarios.length,
-                            itemBuilder: (context, index) {
-                              final usuario = usuarios[index];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 4.0,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey.shade300,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(usuario['tipo']!),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Text(usuario['nombre']!),
-                                      ),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Text(usuario['correo']!),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: IconButton(
-                                          icon: const Icon(
-                                            Icons.block,
-                                            color: kPrimaryColor,
-                                          ),
-                                          tooltip: 'Deshabilitar',
-                                          onPressed: () async {
-                                            final confirm = await showDialog<
-                                              bool
-                                            >(
-                                              context: context,
-                                              builder:
-                                                  (context) => AlertDialog(
-                                                    title: const Text(
-                                                      'Confirmación',
-                                                    ),
-                                                    content: const Text(
-                                                      '¿Está seguro de deshabilitar este usuario?',
-                                                    ),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed:
-                                                            () => Navigator.pop(
-                                                              context,
-                                                              false,
-                                                            ),
-                                                        child: const Text('No'),
-                                                      ),
-                                                      TextButton(
-                                                        onPressed:
-                                                            () => Navigator.pop(
-                                                              context,
-                                                              true,
-                                                            ),
-                                                        child: const Text('Sí'),
-                                                      ),
-                                                    ],
-                                                  ),
-                                            );
+                          child: FutureBuilder<List<Usuario>>(
+                            future: _usuariosFuture,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                  child: Text('Error: ${snapshot.error}'),
+                                );
+                              } else if (!snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
+                                return const Center(
+                                  child: Text('No hay usuarios disponibles.'),
+                                );
+                              }
 
-                                            if (confirm == true) {
-                                              // lógica para deshabilitar usuario
-                                            }
-                                          },
+                              final usuarios = snapshot.data!;
+
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: usuarios.length,
+                                itemBuilder: (context, index) {
+                                  final usuario = usuarios[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4.0,
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey.shade300,
                                         ),
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
-                                    ],
-                                  ),
-                                ),
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(usuario.tipoNombre),
+                                          ),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Text(usuario.nombreUsuario),
+                                          ),
+                                          Expanded(
+                                            flex: 4,
+                                            child: Text(usuario.correo),
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: IconButton(
+                                              icon: const Icon(
+                                                Icons.block,
+                                                color: kPrimaryColor,
+                                              ),
+                                              tooltip: 'Deshabilitar',
+                                              onPressed: () async {
+                                                final confirm = await showDialog<
+                                                  bool
+                                                >(
+                                                  context: context,
+                                                  builder:
+                                                      (context) => AlertDialog(
+                                                        title: const Text(
+                                                          'Confirmación',
+                                                        ),
+                                                        content: const Text(
+                                                          '¿Está seguro de deshabilitar este usuario?',
+                                                        ),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed:
+                                                                () =>
+                                                                    Navigator.pop(
+                                                                      context,
+                                                                      false,
+                                                                    ),
+                                                            child: const Text(
+                                                              'No',
+                                                            ),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed:
+                                                                () =>
+                                                                    Navigator.pop(
+                                                                      context,
+                                                                      true,
+                                                                    ),
+                                                            child: const Text(
+                                                              'Sí',
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                );
+
+                                                if (confirm == true) {
+                                                  final prefs =
+                                                      await SharedPreferences.getInstance();
+                                                  final token =
+                                                      prefs.getString(
+                                                        'token',
+                                                      ) ??
+                                                      '';
+
+                                                  final exito =
+                                                      await _usuarioService
+                                                          .deshabilitarUsuario(
+                                                            usuario.id!,
+                                                            token,
+                                                          );
+
+                                                  if (!context.mounted) return;
+
+                                                  if (exito) {
+                                                    ScaffoldMessenger.of(
+                                                      context,
+                                                    ).showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text(
+                                                          'Usuario deshabilitado',
+                                                        ),
+                                                      ),
+                                                    );
+
+                                                    setState(() {
+                                                      _usuariosFuture =
+                                                          _usuarioService
+                                                              .consultarUsuarios();
+                                                    });
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                      context,
+                                                    ).showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text(
+                                                          'Error al deshabilitar el usuario',
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
                             },
                           ),

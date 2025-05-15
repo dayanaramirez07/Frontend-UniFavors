@@ -7,16 +7,17 @@ import 'package:uni_favors/screens/signup/components/signup_state.dart';
 import 'package:uni_favors/components/focus_listeners.dart';
 
 class SignupForm extends StatefulWidget {
+  final SignupFormStateManager state;
   final void Function(bool isValid)? onFormUpdated;
 
-  const SignupForm({super.key, this.onFormUpdated});
+  const SignupForm({super.key, required this.state, this.onFormUpdated});
 
   @override
   State<SignupForm> createState() => _SignupFormState();
 }
 
 class _SignupFormState extends State<SignupForm> {
-  final state = SignupFormStateManager();
+  SignupFormStateManager get state => widget.state;
 
   @override
   void initState() {
