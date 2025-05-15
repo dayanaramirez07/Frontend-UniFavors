@@ -90,6 +90,7 @@ class _SignupFormState extends State<SignupForm> {
           RoundedDropdown(
             hint: "Tipo de usuario",
             options: ['Vendedor', 'Cliente', 'Compa'],
+            icon: Icons.person,
             onChanged: (value) {
               setState(() {
                 state.tipoUsuarioSeleccionado = value;

@@ -13,7 +13,7 @@ class RoundedDropdown extends StatelessWidget {
     required this.hint,
     required this.options,
     required this.onChanged,
-    this.icon = Icons.person,
+    required this.icon,
   });
 
   @override
