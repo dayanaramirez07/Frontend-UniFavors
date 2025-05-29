@@ -7,16 +7,17 @@ import 'package:uni_favors/components/focus_listeners.dart';
 import 'package:uni_favors/components/image_picker_box.dart';
 
 class ProductForm extends StatefulWidget {
+  final ProductFormStateManager state;
   final void Function(bool isValid)? onFormUpdated;
 
-  const ProductForm({super.key, this.onFormUpdated});
+  const ProductForm({super.key, required this.state, this.onFormUpdated});
 
   @override
   State<ProductForm> createState() => _BusinessFormState();
 }
 
 class _BusinessFormState extends State<ProductForm> {
-  final state = ProductFormStateManager();
+  ProductFormStateManager get state => widget.state;
 
   @override
   void initState() {
@@ -121,8 +122,7 @@ class _BusinessFormState extends State<ProductForm> {
                     controller: state.nombreController,
                     focusNode: state.nombreFocus,
                     validator:
-                        (val) =>
-                            !state.nombreTocado ? null : validarCorreo(val),
+                        (val) => !state.nombreTocado ? null : validarCampo(val),
                   ),
                   RoundedInputField(
                     hintText: "Descripción",

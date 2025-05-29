@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:uni_favors/constants.dart';
 import 'package:uni_favors/components/rounded_button.dart';
+import 'package:uni_favors/screens/product/components/product_controller.dart';
 import 'package:uni_favors/screens/product/components/product_form.dart';
+import 'package:uni_favors/screens/product/components/product_state.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -11,6 +13,10 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  final state = ProductFormStateManager();
+  final productController = ProductController();
+  final bool _isLoading = false;
+
   bool isFormValido = false;
 
   @override
@@ -40,14 +46,30 @@ class _BodyState extends State<Body> {
                 ),
                 SizedBox(height: 20),
                 ProductForm(
+                  state: state,
                   onFormUpdated: (valido) {
                     setState(() => isFormValido = valido);
                   },
                 ),
                 SizedBox(height: 10),
                 RoundedButton(
-                  text: "CREAR",
-                  press: isFormValido ? () => print("Submit") : null,
+                  text: _isLoading ? "Cargando..." : "CREAR",
+                  press:
+                      _isLoading
+                          ? null
+                          : () {
+                            productController.handleCrearProducto(
+                              context: context,
+                              formKey: state.formKey,
+                              nombreController: state.nombreController,
+                              descripcionController:
+                                  state.descripcionController,
+                              cantidadController: state.cantidadController,
+                              precioController: state.precioController,
+                              imagenController: state.imagenController,
+                              estadoSeleccionado: state.estadoSeleccionado,
+                            );
+                          },
                   color: isFormValido ? kPrimaryColor : Colors.grey,
                   border: isFormValido ? kPrimaryColor : Colors.grey,
                   textColor: Colors.white,

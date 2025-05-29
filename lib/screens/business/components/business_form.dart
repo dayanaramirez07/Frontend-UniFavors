@@ -95,7 +95,7 @@ class _BusinessFormState extends State<BusinessForm> {
             icon: Icons.business,
             controller: state.nombreController,
             focusNode: state.nombreFocus,
-            validator: (val) => !state.nombreTocado ? null : validarCorreo(val),
+            validator: (val) => !state.nombreTocado ? null : validarCampo(val),
           ),
           RoundedInputField(
             hintText: "Representante",

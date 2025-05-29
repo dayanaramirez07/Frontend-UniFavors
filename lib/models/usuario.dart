@@ -1,3 +1,5 @@
+import 'package:uni_favors/models/negocio.dart';
+
 class Usuario {
   final int? id;
   final int tipoUsuario;
@@ -6,6 +8,7 @@ class Usuario {
   final String celular;
   final String? contrasenna;
   final String? passwordHash;
+  final Negocio? negocio;
 
   Usuario({
     this.id,
@@ -15,6 +18,7 @@ class Usuario {
     required this.celular,
     this.contrasenna,
     this.passwordHash,
+    this.negocio,
   });
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
@@ -26,6 +30,7 @@ class Usuario {
       celular: json['celular'],
       contrasenna: json['contraseña'],
       passwordHash: json['passwordHash'],
+      negocio: json['negocio'],
     );
   }
 
@@ -36,6 +41,7 @@ class Usuario {
       'correo': correo,
       'celular': celular,
       'contraseña': contrasenna,
+      'negocio': negocio,
     };
 
     if (id != null) {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:uni_favors/constants.dart';
 import 'package:uni_favors/components/custom_card.dart';
 
-class ListScreen extends StatelessWidget {
-  const ListScreen({super.key});
+class ProductsListScreen extends StatelessWidget {
+  const ProductsListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,16 +1,16 @@
 class Producto {
-  final int id;
+  final int? id;
   final int estado;
-  final String nombreProducto;
+  final String nombre;
   final String descripcion;
   final int cantidad;
-  final double precio;
+  final int precio;
   final String imagen;
 
   Producto({
-    required this.id,
+    this.id,
     required this.estado,
-    required this.nombreProducto,
+    required this.nombre,
     required this.descripcion,
     required this.cantidad,
     required this.precio,
@@ -21,11 +21,11 @@ class Producto {
     return Producto(
       id: json['id'],
       estado: json['estado'],
-      nombreProducto: json['nombreProducto'],
+      nombre: json['nombre'],
       descripcion: json['descripcion'],
       cantidad: json['cantidad'],
       precio: json['precio'],
-      imagen: json['imagen'],
+      imagen: (json['imagen'] as String?) ?? '',
     );
   }
 
@@ -33,7 +33,7 @@ class Producto {
     return {
       'id': id,
       'estado': estado,
-      'nombreProducto': nombreProducto,
+      'nombre': nombre,
       'descripcion': descripcion,
       'cantidad': cantidad,
       'precio': precio,
@@ -51,6 +51,19 @@ class Producto {
         return 'Agotado';
       default:
         return '';
+    }
+  }
+
+  static int obtenerEstado(String? estado) {
+    switch (estado) {
+      case 'Disponible':
+        return 1;
+      case 'Bajo Demanda':
+        return 2;
+      case 'Agotado':
+        return 3;
+      default:
+        return 0;
     }
   }
 }

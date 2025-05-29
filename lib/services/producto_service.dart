@@ -7,7 +7,12 @@ class ProductoService {
   final String urlProducto = '${environment}api/productos';
 
   Future<List<Producto>> consultarProductos() async {
-    final response = await http.get(Uri.parse(urlProducto));
+    String basicAuth = 'Basic ${base64Encode(utf8.encode('user:password'))}';
+
+    final response = await http.get(
+      Uri.parse(urlProducto),
+      headers: {'Authorization': basicAuth},
+    );
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);

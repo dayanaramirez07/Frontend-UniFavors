@@ -4,14 +4,14 @@ import 'package:uni_favors/models/usuario.dart';
 import 'package:uni_favors/services/usuario_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ConsultScreen extends StatefulWidget {
-  const ConsultScreen({super.key});
+class ConsultUsersScreen extends StatefulWidget {
+  const ConsultUsersScreen({super.key});
 
   @override
-  State<ConsultScreen> createState() => _ConsultScreenState();
+  State<ConsultUsersScreen> createState() => _ConsultUsersScreenState();
 }
 
-class _ConsultScreenState extends State<ConsultScreen> {
+class _ConsultUsersScreenState extends State<ConsultUsersScreen> {
   final UsuarioService _usuarioService = UsuarioService();
   late Future<List<Usuario>> _usuariosFuture;
 
