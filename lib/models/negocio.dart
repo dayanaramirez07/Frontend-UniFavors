@@ -4,6 +4,8 @@ class Negocio {
   final String nombre;
   final String representante;
   final String logo;
+  final int usuarioId;
+  final String? contacto;
 
   Negocio({
     this.id,
@@ -11,25 +13,32 @@ class Negocio {
     required this.nombre,
     required this.representante,
     required this.logo,
+    required this.usuarioId,
+    this.contacto,
   });
 
   factory Negocio.fromJson(Map<String, dynamic> json) {
+    final negocioJson = json['negocio'] as Map<String, dynamic>;
+    final categoriaJson = negocioJson['categoria'] as Map<String, dynamic>;
+
     return Negocio(
-      id: json['id'],
-      categoria: json['categoria'],
-      nombre: json['nombre'],
-      representante: json['representante'],
-      logo: json['logo'],
+      id: negocioJson['id'] as int?,
+      categoria: categoriaJson['categoriaID'] as int,
+      nombre: negocioJson['nombre'] as String,
+      representante: negocioJson['representanteNombre'] as String,
+      logo: negocioJson['logo'] as String,
+      usuarioId: json['id'] as int,
+      contacto: json['celular'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'categoria': categoria,
       'nombre': nombre,
       'representante': representante,
       'logo': logo,
+      'usuario': {'id': usuarioId},
     };
   }
 

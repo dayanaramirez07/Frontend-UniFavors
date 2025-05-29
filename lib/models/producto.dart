@@ -18,17 +18,18 @@ class Producto {
   });
 
   factory Producto.fromJson(Map<String, dynamic> json) {
+    final estadoObj = json['estado'] as Map<String, dynamic>;
+
     return Producto(
-      id: json['id'],
-      estado: json['estado'],
-      nombre: json['nombre'],
-      descripcion: json['descripcion'],
-      cantidad: json['cantidad'],
-      precio: json['precio'],
-      imagen: (json['imagen'] as String?) ?? '',
+      id: json['id'] as int?,
+      estado: estadoObj['id'] as int,
+      nombre: json['nombre'] as String,
+      descripcion: json['descripcion'] as String,
+      cantidad: json['cantidad'] as int,
+      precio: json['precio'] as int,
+      imagen: json['imagen'] as String,
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
       'id': id,

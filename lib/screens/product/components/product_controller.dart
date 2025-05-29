@@ -32,4 +32,28 @@ class ProductController {
 
     if (!context.mounted) return;
   }
+
+  Future<void> handleActualizarProducto({
+    required BuildContext context,
+    required int id,
+    required GlobalKey<FormState> formKey,
+    required TextEditingController nombreController,
+    required TextEditingController descripcionController,
+    required TextEditingController cantidadController,
+    required TextEditingController precioController,
+    required TextEditingController imagenController,
+    required String? estadoSeleccionado,
+  }) async {
+    formKey.currentState!.save();
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) return;
+
+    await productoService.actualizarProducto(
+      id: id,
+      nuevaImagen: imagenController.text.trim(),
+      nuevaCantidad: int.tryParse(cantidadController.text.trim()),
+      nuevoPrecio: double.tryParse(precioController.text.trim()),
+      nuevoEstado: estadoSeleccionado,
+    );
+  }
 }

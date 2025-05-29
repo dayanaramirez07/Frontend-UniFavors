@@ -22,8 +22,29 @@ class ProductoService {
     }
   }
 
+  Future<List<Producto>> consultarProductoPorNegocio(int id) async {
+    String basicAuth = 'Basic ${base64Encode(utf8.encode('user:password'))}';
+
+    final response = await http.get(
+      Uri.parse('$urlProducto/productosxnegocio/$id'),
+      headers: {'Authorization': basicAuth},
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.map((producto) => Producto.fromJson(producto)).toList();
+    } else {
+      throw Exception('Error al cargar los productos');
+    }
+  }
+
   Future<Producto> consultarProductoPorId(int id) async {
-    final response = await http.get(Uri.parse('$urlProducto/$id'));
+    String basicAuth = 'Basic ${base64Encode(utf8.encode('user:password'))}';
+
+    final response = await http.get(
+      Uri.parse('$urlProducto/$id'),
+      headers: {'Authorization': basicAuth},
+    );
 
     if (response.statusCode == 200) {
       return Producto.fromJson(json.decode(response.body));
@@ -74,7 +95,7 @@ class ProductoService {
     }
   }
 
-  Future<void> eliminarProducto(int id) async {
+  Future<bool> eliminarProducto(int id) async {
     final response = await http.delete(
       Uri.parse('$urlProducto/$id'),
       headers: <String, String>{
@@ -82,8 +103,10 @@ class ProductoService {
       },
     );
 
-    if (response.statusCode != 200) {
-      throw Exception('Error al eliminar el producto');
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

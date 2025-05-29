@@ -30,7 +30,6 @@ class Usuario {
       celular: json['celular'],
       contrasenna: json['contraseña'],
       passwordHash: json['passwordHash'],
-      negocio: json['negocio'],
     );
   }
 

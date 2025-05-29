@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:uni_favors/models/negocio.dart';
+import 'package:uni_favors/screens/business/business_list_screen.dart';
 import 'package:uni_favors/screens/business/business_screen.dart';
 import 'package:uni_favors/screens/configuration/configuration_screen.dart';
 import 'package:uni_favors/screens/consult_products/consult_products_screen.dart';
+import 'package:uni_favors/screens/consult_products/products_list_screen.dart';
 import 'package:uni_favors/screens/consult_users/consult_users_screen.dart';
 import 'package:uni_favors/screens/product/product_screen.dart';
 import 'components/header.dart';
@@ -19,6 +21,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _currentIndex = 0;
   final PageController _pageController = PageController();
+  final _clientNavKey = GlobalKey<NavigatorState>();
 
   String? tipoUsuarioController;
   Negocio? negocioController;
@@ -89,11 +92,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
       case 'Cliente':
         screens = [
-          _buildHome('Bienvenido, Cliente'),
+          Navigator(
+            key: _clientNavKey,
+            onGenerateRoute: (settings) {
+              return MaterialPageRoute(
+                builder:
+                    (_) => BusinessListScreen(
+                      onNegocioSelected: (negocioId) {
+                        _clientNavKey.currentState!.push(
+                          MaterialPageRoute(
+                            builder:
+                                (_) => ProductsListScreen(negocioId: negocioId),
+                          ),
+                        );
+                      },
+                    ),
+              );
+            },
+          ),
           const ConfigurationScreen(),
         ];
         items = const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.storefront),
+            label: 'Servicios',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Config'),
         ];
         break;

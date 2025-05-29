@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uni_favors/constants.dart';
 import 'package:uni_favors/models/producto.dart';
+import 'package:uni_favors/screens/product/product_screen.dart';
 import 'package:uni_favors/services/producto_service.dart';
 
 class ConsultProductsScreen extends StatefulWidget {
@@ -176,15 +177,15 @@ class _ConsultUsersScreenState extends State<ConsultProductsScreen> {
                                                     color: kPrimaryColor,
                                                   ),
                                                   tooltip: 'Editar',
-                                                  onPressed: () {
-                                                    // lógica para editar producto
-                                                    ScaffoldMessenger.of(
-                                                      context,
-                                                    ).showSnackBar(
-                                                      SnackBar(
-                                                        content: Text(
-                                                          'Editar producto: ${producto.nombre}',
-                                                        ),
+                                                  onPressed: () async {
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder:
+                                                            (_) =>
+                                                                ProductScreen(
+                                                                  producto:
+                                                                      producto,
+                                                                ),
                                                       ),
                                                     );
                                                   },
@@ -238,7 +239,43 @@ class _ConsultUsersScreenState extends State<ConsultProductsScreen> {
                                                     );
 
                                                     if (confirm == true) {
-                                                      // lógica para eliminar producto
+                                                      final exito =
+                                                          await _productoService
+                                                              .eliminarProducto(
+                                                                producto.id!,
+                                                              );
+
+                                                      if (!context.mounted) {
+                                                        return;
+                                                      }
+
+                                                      if (exito) {
+                                                        ScaffoldMessenger.of(
+                                                          context,
+                                                        ).showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                              'Producto eliminado',
+                                                            ),
+                                                          ),
+                                                        );
+
+                                                        setState(() {
+                                                          _productosFuture =
+                                                              _productoService
+                                                                  .consultarProductos();
+                                                        });
+                                                      } else {
+                                                        ScaffoldMessenger.of(
+                                                          context,
+                                                        ).showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                              'Error al eliminar el producto',
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
                                                     }
                                                   },
                                                 ),

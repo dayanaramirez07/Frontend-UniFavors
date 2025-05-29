@@ -7,16 +7,17 @@ import 'package:uni_favors/components/focus_listeners.dart';
 import 'package:uni_favors/components/image_picker_box.dart';
 
 class BusinessForm extends StatefulWidget {
+  final BusinessFormStateManager state;
   final void Function(bool isValid)? onFormUpdated;
 
-  const BusinessForm({super.key, this.onFormUpdated});
+  const BusinessForm({super.key, required this.state, this.onFormUpdated});
 
   @override
   State<BusinessForm> createState() => _BusinessFormState();
 }
 
 class _BusinessFormState extends State<BusinessForm> {
-  final state = BusinessFormStateManager();
+  BusinessFormStateManager get state => widget.state;
 
   @override
   void initState() {

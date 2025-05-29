@@ -23,16 +23,20 @@ class NegocioService {
   }
 
   Future<void> crearNegocio(Negocio negocio) async {
+    final basicAuth = 'Basic ${base64Encode(utf8.encode('user:password'))}';
     final response = await http.post(
-      Uri.parse(urlNegocio),
-      headers: <String, String>{
+      Uri.parse('$environment/api/negocios'),
+      headers: {
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': basicAuth,
       },
       body: json.encode(negocio.toJson()),
     );
 
-    if (response.statusCode != 201) {
-      throw Exception('Error al crear el Negocio');
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw Exception(
+        'Error ${response.statusCode} al crear negocio:\n${response.body}',
+      );
     }
   }
 }
