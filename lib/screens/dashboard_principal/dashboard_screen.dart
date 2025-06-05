@@ -6,6 +6,7 @@ import 'package:uni_favors/screens/configuration/configuration_screen.dart';
 import 'package:uni_favors/screens/consult_products/consult_products_screen.dart';
 import 'package:uni_favors/screens/consult_products/products_list_screen.dart';
 import 'package:uni_favors/screens/consult_users/consult_users_screen.dart';
+import 'package:uni_favors/screens/orders/orders_list_screen.dart';
 import 'package:uni_favors/screens/product/product_screen.dart';
 import 'components/header.dart';
 import 'package:uni_favors/constants.dart';
@@ -98,11 +99,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               return MaterialPageRoute(
                 builder:
                     (_) => BusinessListScreen(
-                      onNegocioSelected: (negocioId) {
+                      onNegocioSelected: (negocioId, contacto) {
                         _clientNavKey.currentState!.push(
                           MaterialPageRoute(
                             builder:
-                                (_) => ProductsListScreen(negocioId: negocioId),
+                                (_) => ProductsListScreen(
+                                  negocioId: negocioId,
+                                  contacto: contacto,
+                                ),
                           ),
                         );
                       },
@@ -151,9 +155,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
 
       case 'Compa':
-        screens = [_buildHome('Panel Compa'), const ConfigurationScreen()];
+        screens = [const OrdersListScreen(), const ConfigurationScreen()];
         items = const [
-          BottomNavigationBarItem(icon: Icon(Icons.handshake), label: 'Compa'),
+          BottomNavigationBarItem(icon: Icon(Icons.badge), label: 'Pedidos'),
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Config'),
         ];
         break;

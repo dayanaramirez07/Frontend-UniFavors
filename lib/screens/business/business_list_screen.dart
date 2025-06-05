@@ -5,7 +5,7 @@ import 'package:uni_favors/models/negocio.dart';
 import 'package:uni_favors/services/negocio_service.dart';
 
 class BusinessListScreen extends StatefulWidget {
-  final void Function(int negocioId) onNegocioSelected;
+  final void Function(int negocioId, String contacto) onNegocioSelected;
   const BusinessListScreen({super.key, required this.onNegocioSelected});
 
   @override
@@ -89,7 +89,10 @@ class _BusinessListScreenState extends State<BusinessListScreen> {
                                 actions: [
                                   TextButton(
                                     onPressed:
-                                        () => widget.onNegocioSelected(neg.id!),
+                                        () => widget.onNegocioSelected(
+                                          neg.id!,
+                                          neg.contacto!,
+                                        ),
                                     child: const Text(
                                       'Ver productos',
                                       style: TextStyle(color: kPrimaryColor),

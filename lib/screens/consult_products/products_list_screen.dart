@@ -3,10 +3,16 @@ import 'package:uni_favors/constants.dart';
 import 'package:uni_favors/components/custom_card.dart';
 import 'package:uni_favors/models/producto.dart';
 import 'package:uni_favors/services/producto_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductsListScreen extends StatefulWidget {
   final int negocioId;
-  const ProductsListScreen({super.key, required this.negocioId});
+  final String contacto;
+  const ProductsListScreen({
+    super.key,
+    required this.negocioId,
+    required this.contacto,
+  });
 
   @override
   State<ProductsListScreen> createState() => _ProductsListScreenState();
@@ -89,10 +95,134 @@ class _ProductsListScreenState extends State<ProductsListScreen> {
                                 ),
                                 actions: [
                                   TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'Contactar vendedor',
-                                      style: TextStyle(color: kPrimaryColor),
+                                    onPressed: () {
+                                      if (producto.estado == 2) {
+                                        final url =
+                                            'https://wa.me/${573128567530}?text=Hola, estoy interesado en el producto "${producto.nombre}"';
+                                        launchUrl(Uri.parse(url));
+                                      } else {
+                                        int cantidad = 1;
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return StatefulBuilder(
+                                              builder: (context, setState) {
+                                                double total =
+                                                    cantidad.toDouble() *
+                                                    producto.precio;
+                                                return AlertDialog(
+                                                  title: Center(
+                                                    child: Text(
+                                                      producto.nombre,
+                                                    ),
+                                                  ),
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Center(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            const Text(
+                                                              'Cantidad: ',
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            DropdownButton<int>(
+                                                              value: cantidad,
+                                                              items:
+                                                                  List.generate(
+                                                                        producto
+                                                                            .cantidad,
+                                                                        (i) =>
+                                                                            i +
+                                                                            1,
+                                                                      )
+                                                                      .map(
+                                                                        (
+                                                                          e,
+                                                                        ) => DropdownMenuItem<
+                                                                          int
+                                                                        >(
+                                                                          value:
+                                                                              e,
+                                                                          child: Text(
+                                                                            e.toString(),
+                                                                          ),
+                                                                        ),
+                                                                      )
+                                                                      .toList(),
+                                                              onChanged: (
+                                                                value,
+                                                              ) {
+                                                                if (value !=
+                                                                    null) {
+                                                                  setState(() {
+                                                                    cantidad =
+                                                                        value;
+                                                                  });
+                                                                }
+                                                              },
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text(
+                                                        'Precio total: \$${total.toStringAsFixed(0)}',
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  actionsAlignment:
+                                                      MainAxisAlignment.center,
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed:
+                                                          () => Navigator.pop(
+                                                            context,
+                                                          ),
+                                                      child: const Text(
+                                                        'Cancelar',
+                                                      ),
+                                                    ),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                        ScaffoldMessenger.of(
+                                                          context,
+                                                        ).showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                              'Compra realizada.',
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: const Text(
+                                                        'Comprar',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                    child: Text(
+                                      producto.estado == 1
+                                          ? 'Realizar pedido'
+                                          : 'Contactar vendedor',
+                                      style: const TextStyle(
+                                        color: kPrimaryColor,
+                                      ),
                                     ),
                                   ),
                                 ],
