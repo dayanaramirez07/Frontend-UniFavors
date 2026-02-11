@@ -30,6 +30,8 @@ El objetivo es fortalecer la comunidad universitaria a través de la cooperació
 Desarrollado por **Dayana Ramirez**  
 Desarrolladora Frontend Junior
 
+---
+
 ## 🤝 Contribuciones
 
 Las contribuciones son bienvenidas.  
